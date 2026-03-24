@@ -14,6 +14,7 @@ import { ProfilesModule } from './profiles/profiles.module';
 import { PaymentsModule } from './payments/payments.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { CommunicationModule } from './communication/communication.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { CommunicationModule } from './communication/communication.module';
     PaymentsModule,
     CampaignsModule,
     CommunicationModule,
+    AdminModule,
   ],
 
   controllers: [AppController],
