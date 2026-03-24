@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Campaign } from '../../campaigns/entities/campaign.entity';
-import { InfluencerProfile } from '../../profiles/entities/influencer-profile.entity';
+import { Campaign } from '../campaigns/entities/campaign.entity';
+import { InfluencerProfile } from '../profiles/entities/influencer-profile.entity';
 
 @Injectable()
 export class MatchingEngineService {
