@@ -8,6 +8,9 @@ export class BusinessProfile {
 
   @OneToOne(() => User, (user) => user.id)
   @JoinColumn({ name: 'userId' })
+  user: User;
+
+  @Column()
   userId: string;
 
   @Column()

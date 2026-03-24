@@ -32,6 +32,9 @@ export class User {
   lastName?: string;
 
   @Column({ nullable: true })
+  mobileNumber?: string;
+
+  @Column({ nullable: true })
   avatarUrl?: string;
 
   @CreateDateColumn()

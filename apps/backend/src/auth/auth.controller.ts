@@ -11,13 +11,19 @@ export class AuthController {
   async register(
     @Body('email') email: string,
     @Body('role') role: UserRole,
+    @Body('password') password?: string,
+    @Body('firstName') firstName?: string,
+    @Body('mobileNumber') mobileNumber?: string,
   ) {
-    return this.authService.register(email, role);
+    return this.authService.register(email, role, password, firstName, mobileNumber);
   }
 
   @Post('login')
-  async login(@Body('email') email: string) {
-    return this.authService.login(email);
+  async login(
+    @Body('email') email: string,
+    @Body('password') password?: string,
+  ) {
+    return this.authService.login(email, password);
   }
 
   @UseGuards(JwtAuthGuard)

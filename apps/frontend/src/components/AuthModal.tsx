@@ -49,24 +49,78 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: {
             </div>
           )}
 
-          <form className="space-y-4" onSubmit={(e) => {
+          <form className="space-y-4" onSubmit={async (e) => {
             e.preventDefault();
-            localStorage.setItem('access_token', 'mock_token_' + Date.now());
-            localStorage.setItem('user_role', role);
-            window.location.href = `/dashboard/${role.toLowerCase()}`;
+            const formData = new FormData(e.currentTarget);
+            const data = Object.fromEntries(formData.entries());
+            
+            try {
+              const endpoint = mode === 'register' ? '/auth/register' : '/auth/login';
+              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}${endpoint}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...data, role }),
+              });
+
+              if (!response.ok) throw new Error('Authentication failed');
+              
+              const result = await response.json();
+              localStorage.setItem('access_token', result.accessToken);
+              localStorage.setItem('user_role', result.user.role);
+              window.location.href = `/dashboard/${result.user.role.toLowerCase()}`;
+            } catch (err) {
+              alert(err instanceof Error ? err.message : 'Something went wrong');
+            }
           }}>
+            {mode === 'register' && (
+              <>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 ml-1">Full Name</label>
+                  <input 
+                    name="firstName"
+                    type="text" 
+                    required
+                    placeholder="Enter your name"
+                    className="w-full bg-secondary border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 ml-1">Mobile No.</label>
+                  <input 
+                    name="mobileNumber"
+                    type="tel" 
+                    required
+                    placeholder="+91 00000 00000"
+                    className="w-full bg-secondary border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                  />
+                </div>
+              </>
+            )}
+
             <div>
               <label className="block text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 ml-1">Email Address</label>
               <input 
+                name="email"
                 type="email" 
                 required
                 placeholder="name@example.com"
                 className="w-full bg-secondary border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
               />
             </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 ml-1">Password</label>
+              <input 
+                name="password"
+                type="password" 
+                required
+                placeholder="••••••••"
+                className="w-full bg-secondary border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+              />
+            </div>
             
             <button type="submit" className="w-full bg-primary text-white font-bold py-4 rounded-2xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95">
-              {mode === 'login' ? 'Continue with Email' : 'Create Account'}
+              {mode === 'login' ? 'Login' : 'Create Account'}
             </button>
           </form>
 
@@ -75,6 +129,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: {
               {mode === 'login' ? "Don't have an account?" : "Already have an account?"}
             </span>
             <button 
+              type="button"
               onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
               className="ml-2 text-primary font-bold hover:underline"
             >
