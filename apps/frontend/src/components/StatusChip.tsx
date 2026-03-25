@@ -18,7 +18,7 @@ export default function StatusChip({ status, variant }: { status: string; varian
       'px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border shadow-sm',
       variants[variant || 'neutral']
     )}>
-      {status}
+      {typeof status === 'string' ? status : String(status || '')}
     </span>
   );
 }
