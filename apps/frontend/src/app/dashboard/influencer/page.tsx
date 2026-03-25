@@ -82,7 +82,7 @@ export default function InfluencerDashboard() {
   }, []);
 
   const handleAddPlatform = () => {
-    setprofileData({
+    setProfileData({
       ...profileData,
       socialPlatforms: [...profileData.socialPlatforms, { platform: '', handle: '', followerCount: 0, views: 0, likes: 0, comments: 0, profileUrl: '' }]
     });
@@ -91,11 +91,11 @@ export default function InfluencerDashboard() {
   const handlePlatformChange = (index: number, field: keyof SocialPlatform, value: any) => {
     const newPlatforms = [...profileData.socialPlatforms];
     newPlatforms[index] = { ...newPlatforms[index], [field]: value };
-    setprofileData({ ...profileData, socialPlatforms: newPlatforms });
+    setProfileData({ ...profileData, socialPlatforms: newPlatforms });
   };
 
   const handleAddCreative = (type: 'video' | 'image') => {
-    setprofileData({
+    setProfileData({
       ...profileData,
       creatives: [...profileData.creatives, { type, url: 'https://via.placeholder.com/300', brandName: '' }]
     });
@@ -104,7 +104,7 @@ export default function InfluencerDashboard() {
   const handleCreativeChange = (index: number, field: keyof Creative, value: string) => {
     const newCreatives = [...profileData.creatives];
     newCreatives[index] = { ...newCreatives[index], [field]: value };
-    setprofileData({ ...profileData, creatives: newCreatives });
+    setProfileData({ ...profileData, creatives: newCreatives });
   };
 
   const generateAIBio = async () => {
@@ -135,8 +135,8 @@ export default function InfluencerDashboard() {
   };
 
   const handleFileUpload = async (file: File, type: 'avatar' | 'creative', index?: number) => {
-    const profileData = new profileData();
-    profileData.append('file', file);
+    const formData = new FormData();
+    formData.append('file', file);
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/profiles/upload`, {
@@ -144,7 +144,7 @@ export default function InfluencerDashboard() {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}`
         },
-        body: profileData,
+        body: formData,
       });
 
       if (!response.ok) throw new Error('Upload failed');
@@ -224,23 +224,23 @@ export default function InfluencerDashboard() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="text-[10px] font-black uppercase text-zinc-400 ml-4 mb-2 block">Your Niche</label>
-                      <input value={profileData.niche} onChange={e => setprofileData({...profileData, niche: e.target.value})} placeholder="Fashion, Tech, Food..." className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
+                      <input value={profileData.niche} onChange={e => setProfileData({...profileData, niche: e.target.value})} placeholder="Fashion, Tech, Food..." className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                     <div>
                       <label className="text-[10px] font-black uppercase text-zinc-400 ml-4 mb-2 block">Address</label>
-                      <input value={profileData.address} onChange={e => setprofileData({...profileData, address: e.target.value})} placeholder="City, Country" className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
+                      <input value={profileData.address} onChange={e => setProfileData({...profileData, address: e.target.value})} placeholder="City, Country" className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                     <div>
                       <label className="text-[10px] font-black uppercase text-zinc-400 ml-4 mb-2 block">Public Contact Email</label>
-                      <input value={profileData.contactEmail} onChange={e => setprofileData({...profileData, contactEmail: e.target.value})} placeholder="business@you.com" className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
+                      <input value={profileData.contactEmail} onChange={e => setProfileData({...profileData, contactEmail: e.target.value})} placeholder="business@you.com" className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                     <div>
                       <label className="text-[10px] font-black uppercase text-zinc-400 ml-4 mb-2 block">Contact No.</label>
-                      <input value={profileData.contactNo} onChange={e => setprofileData({...profileData, contactNo: e.target.value})} placeholder="+91 ..." className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
+                      <input value={profileData.contactNo} onChange={e => setProfileData({...profileData, contactNo: e.target.value})} placeholder="+91 ..." className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                     <div>
                       <label className="text-[10px] font-black uppercase text-zinc-400 ml-4 mb-2 block">WhatsApp No.</label>
-                      <input value={profileData.whatsappNo} onChange={e => setprofileData({...profileData, whatsappNo: e.target.value})} placeholder="+91 ..." className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
+                      <input value={profileData.whatsappNo} onChange={e => setProfileData({...profileData, whatsappNo: e.target.value})} placeholder="+91 ..." className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
                     </div>
                   </div>
 
@@ -261,7 +261,7 @@ export default function InfluencerDashboard() {
                         {aiBios.map((bio, i) => (
                           <div 
                             key={i} 
-                            onClick={() => setprofileData({...profileData, bio})}
+                            onClick={() => setProfileData({...profileData, bio})}
                             className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-sm leading-relaxed ${profileData.bio === bio ? 'border-primary bg-primary/5' : 'border-white/5 hover:border-white/20'}`}
                           >
                             {bio}
