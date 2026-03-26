@@ -24,6 +24,15 @@ export default async function (req: any, res: any) {
     return;
   }
 
-  const app = await bootstrap();
-  app(req, res);
+  try {
+    const app = await bootstrap();
+    app(req, res);
+  } catch (err: any) {
+    console.error('Bootstrap Error:', err);
+    res.status(500).json({ 
+      message: 'Backend failed to start', 
+      error: err.message,
+      stack: err.stack
+    });
+  }
 }
