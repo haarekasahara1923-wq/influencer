@@ -74,10 +74,10 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 opacity-100 transition-opacity">
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} />
+    <div className="fixed inset-0 z-[100] flex min-h-full items-center justify-center p-4 sm:p-6 overflow-y-auto overflow-x-hidden">
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} />
       
-      <div className="bg-white w-full max-w-4xl rounded-[2.5rem] overflow-hidden shadow-2xl relative flex flex-col md:flex-row animate-in fade-in zoom-in-95 duration-400 z-10 min-h-[600px]">
+      <div className="bg-white w-full max-w-4xl rounded-[2.5rem] overflow-hidden shadow-2xl relative flex flex-col md:flex-row animate-in fade-in zoom-in-95 duration-400 z-10 min-h-[600px] my-auto">
         {/* Left Side: Branding / Image */}
         <div className="hidden md:flex md:w-5/12 bg-primary relative p-10 flex-col justify-between overflow-hidden">
            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
